@@ -1,32 +1,31 @@
-import jwt from "jsonwebtoken";
+
 import { NextResponse } from "next/server";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import connectDB from "@/utils/connectDB";
+import { generateToken } from "@/app/libs/auth";
 connectDB();
-const secret = process.env.SECRET;
 export async function POST(req) {
   const { username, password } = await req.json();
   const userDoc = await User.findOne({ username });
   const passOk = bcrypt.compareSync(password, userDoc.password);
-  const cookieOptions = {
-    maxAge: 604800, // Cookie expiration time in seconds (one week)
-    path: "/", // Cookie path
-  };
-  let myToken = "k";
+
   if (passOk) {
-    // logged in
-    jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
-      if (err) throw err;
-      console.log(token)
-      myToken = token;
+    const token = generateToken({ username, id: userDoc._id });
+
+    const response = NextResponse.json(
+      { success: true },
+      { status: 200, headers: { "content-type": "application/json" } }
+    );
+
+    response.cookies.set({
+      name: "token",
+      value: token,
+      path: "/",
     });
-    return NextResponse.json({
-      id: userDoc._id,
-      username,
-      myToken,
-    });
-  } else {
-    return NextResponse.status(400).json("wrong credentials");
+
+    return response;
   }
+
+  return NextResponse.json({ success: false });
 }

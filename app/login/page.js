@@ -1,8 +1,8 @@
 "use client";
 import domain from "@/utils/config";
 import { useContext, useState } from "react";
-import { UserContext } from "../lib/UserContext";
-import { useRouter} from 'next/navigation';
+import { UserContext } from "../hooks/UserContext";
+import { useRouter } from "next/navigation";
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

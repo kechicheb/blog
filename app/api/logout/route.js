@@ -1,11 +1,10 @@
-import { destroyCookie } from "next-cookies";
+import { NextResponse } from "next/server";
 
 export async function post(req) {
-  // Delete the 'token' cookie
-  destroyCookie({ res: req.res }, "token");
+  const response = NextResponse.redirect(
+    new URL(`/login?${searchParams}`, url)
+  );
+  response.cookies.delete("token");
 
-  return {
-    status: 200,
-    body: { message: "Cookie deleted" },
-  };
+  return response;
 }
