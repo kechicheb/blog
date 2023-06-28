@@ -1,7 +1,8 @@
+import { middleware } from "@/app/middleware";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
-  const reqq = await req.json();
-  const { token } = reqq.cookies;
-  return NextResponse.json(token);
+  req = await req.json();
+  middleware(req);
+  return NextResponse.json(verifyToken(req.cookie.token));
 }
