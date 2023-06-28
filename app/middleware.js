@@ -39,4 +39,4 @@ export async function middleware(request) {
   return NextResponse.next();
 }
 
-export const config = { matcher: ["/login", "/post/:path*"] };
+// export const config = { matcher: ["/login", "/post/:path*"] };

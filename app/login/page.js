@@ -28,7 +28,7 @@ export default function LoginPage() {
   }
 
   if (redirect) {
-    router.push("/about");
+    router.push("/post");
     return;
   }
   return (
