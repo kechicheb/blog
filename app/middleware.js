@@ -23,17 +23,17 @@ export async function middleware(request) {
     return response;
   }
 
-  if (!hasVerifiedToken) {
-    const searchParams = new URLSearchParams(nextUrl.searchParams);
-    searchParams.set("next", nextUrl.pathname);
+  // if (!hasVerifiedToken) {
+  //   const searchParams = new URLSearchParams(nextUrl.searchParams);
+  //   searchParams.set("next", nextUrl.pathname);
 
-    const response = NextResponse.redirect(
-      new URL(`/login?${searchParams}`, url)
-    );
-    response.cookies.delete("token");
+  //   const response = NextResponse.redirect(
+  //     new URL(`/login?${searchParams}`, url)
+  //   );
+  //   response.cookies.delete("token");
 
-    return response;
-  }
+  //   return response;
+  // }
 
   return NextResponse.next();
 }
