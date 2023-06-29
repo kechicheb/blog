@@ -1,5 +1,9 @@
 import Post from "@/models/Post";
+import multer from "multer";
 import { NextResponse } from "next/server";
+import fs from "fs";
+const uploadMiddleware = multer({ dest: "uploads/" });
+
 export async function GET(req) {
   await middleware(req);
   const { query: id } = await req.json();
@@ -19,6 +23,7 @@ export async function GET(req) {
 export async function POST(req) {
   await middleware(req);
   req = await req.json();
+  uploadMiddleware.single("file");
   const { originalname, path } = req.file;
   const parts = originalname.split(".");
   const ext = parts[parts.length - 1];
@@ -39,6 +44,7 @@ export async function POST(req) {
 export async function PUT(req) {
   await middleware(req);
   req = await req.json();
+  uploadMiddleware.single("file");
   let newPath = null;
   if (req.file) {
     const { originalname, path } = req.file;
