@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
@@ -15,7 +14,13 @@ export async function POST(req) {
 
     const response = NextResponse.json(
       { success: true },
-      { status: 200, headers: { "content-type": "application/json" } }
+      {
+        status: 200,
+        headers: {
+          "content-type": "application/json",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      }
     );
 
     response.cookies.set({
