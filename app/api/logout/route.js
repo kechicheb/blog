@@ -1,8 +1,8 @@
-import domain from "@/utils/config";
+import { middleware } from "@/app/middleware";
 import { NextResponse } from "next/server";
 import Cookies from "universal-cookie";
-import { URL } from "url";
 export async function POST(req) {
+  await middleware(req);
   const cookies = new Cookies();
   cookies.remove("token", { path: "/" });
 
