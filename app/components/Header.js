@@ -11,11 +11,9 @@ export default async function Header() {
   useEffect(() => {
     fetch(`${domain}/profile`, {
       credentials: "include",
-    }).then((response) => {
-      response.json().then((userInfo) => {
-        setUserInfo(userInfo);
-      });
-    });
+    })
+      .then((response) => response)
+      .then((userInfo) => setUserInfo(userInfo));
   }, []);
 
   function logout() {

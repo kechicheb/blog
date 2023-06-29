@@ -1,10 +1,10 @@
+import domain from "@/utils/config";
 import { NextResponse } from "next/server";
+import Cookies from "universal-cookie";
+import { URL } from "url";
+export async function POST(req) {
+  const cookies = new Cookies();
+  cookies.remove("token", { path: "/" });
 
-export async function post(req) {
-  const response = NextResponse.redirect(
-    new URL(`/login?${searchParams}`, url)
-  );
-  response.cookies.delete("token");
-
-  return response;
+  return NextResponse.json({ logout: true });
 }
