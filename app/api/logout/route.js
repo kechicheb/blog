@@ -1,10 +1,10 @@
 import { middleware } from "@/app/middleware";
 import { NextResponse } from "next/server";
-import Cookies from "universal-cookie";
 export async function POST(req) {
   await middleware(req);
-  const cookies = new Cookies();
+  const { url, cookies } = request;
   cookies.remove("token", { path: "/" });
 
-  return NextResponse.json({ logout: true });
+  const response = NextResponse.redirect(new URL(`/`, url));
+  return response;
 }
