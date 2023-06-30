@@ -2,6 +2,7 @@ import { verifyJwtToken } from "@/app/libs/auth";
 import React from "react";
 import Cookies from "universal-cookie";
 
+
 const fromServer = async () => {
   const cookies = require("next/headers").cookies;
   const cookieList = cookies();
