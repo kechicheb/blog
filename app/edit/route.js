@@ -12,13 +12,13 @@ export default function EditPost() {
   const router = useRouter();
   const { id } = router.query;
   useEffect(() => {
-    fetch(`${domain}/post/${id}`).then((response) => {
-      response.json().then((postInfo) => {
+    fetch(`${domain}/post/${id}`)
+      .then((response) => response.json())
+      .then((postInfo) => {
         setTitle(postInfo.title);
         setContent(postInfo.content);
         setSummary(postInfo.summary);
       });
-    });
   }, []);
 
   async function updatePost(ev) {

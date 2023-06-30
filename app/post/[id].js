@@ -10,13 +10,13 @@ export default function PostPage() {
   const { userInfo } = useContext(UserContext);
   const router = useRouter();
   const { id } = router.query;
-  useEffect(() => {
-    fetch(`${domain}/post/${id}`).then((response) => {
-      response.json().then((postInfo) => {
-        setPostInfo(postInfo);
-      });
-    });
-  }, []);
+  useEffect(
+    () =>
+      fetch(`${domain}/post/${id}`)
+        .then((response) => response.json())
+        .then((postInfo) => setPostInfo(postInfo)),
+    []
+  );
 
   if (!postInfo) return "";
 

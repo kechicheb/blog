@@ -2,11 +2,14 @@ import Post from "@/models/Post";
 import multer from "multer";
 import { NextResponse } from "next/server";
 import fs from "fs";
+import { middleware } from "@/app/middleware";
+import connectDB from "@/utils/connectDB";
 const uploadMiddleware = multer({ dest: "uploads/" });
-
+connectDB();
 export async function GET(req) {
-  await middleware(req);
-  const { query: id } = await req.json();
+  req = await req.json();
+  middleware(req);
+  const { query: id } = req;
   if (id) {
     const postDoc = await Post.findById(id).populate("author", ["username"]);
     return NextResponse.json(postDoc);
@@ -21,8 +24,8 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-  await middleware(req);
   req = await req.json();
+  middleware(req);
   uploadMiddleware.single("file");
   const { originalname, path } = req.file;
   const parts = originalname.split(".");
@@ -42,8 +45,8 @@ export async function POST(req) {
   res.json(postDoc);
 }
 export async function PUT(req) {
-  await middleware(req);
   req = await req.json();
+  middleware(req);
   uploadMiddleware.single("file");
   let newPath = null;
   if (req.file) {

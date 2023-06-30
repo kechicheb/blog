@@ -3,16 +3,16 @@ import Link from "next/link";
 import { useContext, useEffect } from "react";
 import domain from "@/utils/config";
 import { UserContext } from "../hooks/UserContext";
-// import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 export default async function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
-  // const auth = await useAuth.fromServer();
+  const auth = await useAuth.fromServer();
   useEffect(() => {
     fetch(`${domain}/profile`, {
       credentials: "include",
     })
-      .then((response) => response)
+      .then((response) => response.json())
       .then((userInfo) => setUserInfo(userInfo));
   }, []);
 
@@ -32,13 +32,13 @@ export default async function Header() {
         MyBlog
       </Link>
       <nav>
-        {username && (
+        {auth && (
           <>
             <Link href="/create">Create new post</Link>
             <a onClick={logout}>Logout ({username})</a>
           </>
         )}
-        {!username && (
+        {!auth && (
           <>
             <Link href="/login">Login</Link>
             <Link href="/register">Register</Link>
