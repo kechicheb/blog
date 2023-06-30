@@ -19,7 +19,7 @@ export default function LoginPage() {
       // const nextUrl = searchParams.get("next");
       // router.push(nextUrl ?? "/");
       // router.refresh();
-      router.push("/post");
+      router.push("/post" ?? "/");
     } else {
       alert("Login failed");
     }
