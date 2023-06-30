@@ -12,7 +12,12 @@ export default async function Header() {
     fetch(`${domain}/profile`, {
       credentials: "include",
     })
-      .then((response) => response.json())
+      .then((response) => {
+        console.log("#####");
+        console.log(response);
+        console.log("##########");
+        return response;
+      })
       .then((userInfo) => setUserInfo(userInfo));
   }, []);
 
