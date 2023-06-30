@@ -6,30 +6,16 @@ import { middleware } from "@/app/middleware";
 import connectDB from "@/utils/connectDB";
 const uploadMiddleware = multer({ dest: "uploads/" });
 connectDB();
-export async function GET(req) {
-  middleware(req);
-  const { searchParams } = new URL(req.url);
-
-  const id = searchParams.get("id");
-
-  console.log(id);
-  if (id) {
-    // const postDoc = await Post.findById(id).populate("author", ["username"]);
-    // return NextResponse.json(postDoc);
-    return NextResponse.json({ "fetch by ID": "yes" });
-  } else {
-    return NextResponse.json(
-      await Post.find()
-        .populate("author", ["username"])
-        .sort({ createdAt: -1 })
-        .limit(20)
-    );
-  }
+export async function GET() {
+  return NextResponse.json(
+    await Post.find()
+      .populate("author", ["username"])
+      .sort({ createdAt: -1 })
+      .limit(20)
+  );
 }
 
 export async function POST(req) {
-  // req = await req.json();
-  middleware(req);
   uploadMiddleware.single("file");
   const { originalname, path } = req.file;
   const parts = originalname.split(".");
@@ -49,8 +35,6 @@ export async function POST(req) {
   res.json(postDoc);
 }
 export async function PUT(req) {
-  // req = await req.json();
-  middleware(req);
   uploadMiddleware.single("file");
   let newPath = null;
   if (req.file) {
