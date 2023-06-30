@@ -21,6 +21,8 @@ export function middleware(request) {
   if (!hasVerifiedToken) {
     return NextResponse.redirect(new URL("/post", url));
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
