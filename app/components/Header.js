@@ -21,7 +21,6 @@ export default async function Header() {
       credentials: "include",
       method: "POST",
     });
-    setUserInfo(null);
   }
 
   return (
