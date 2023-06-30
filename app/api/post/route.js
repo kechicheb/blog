@@ -8,7 +8,9 @@ const uploadMiddleware = multer({ dest: "uploads/" });
 connectDB();
 export async function GET(req) {
   middleware(req);
-  const { query: id } = req;
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get("id");
+  console.log(id);
   if (id) {
     const postDoc = await Post.findById(id).populate("author", ["username"]);
     return NextResponse.json(postDoc);
