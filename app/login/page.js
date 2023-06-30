@@ -1,29 +1,30 @@
 "use client";
+
+import { useRouter, useSearchParams } from "next/navigation";
 import domain from "@/utils/config";
-import { useContext, useState } from "react";
-import { UserContext } from "../hooks/UserContext";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [redirect, setRedirect] = useState(false);
-  const { setUserInfo } = useContext(UserContext);
+  const searchParams = useSearchParams();
   const router = useRouter();
   async function login(ev) {
     ev.preventDefault();
-    const response = await fetch(`${domain}/login`, {
+    const res = await fetch(`${domain}/login`, {
       method: "POST",
       body: JSON.stringify({ username, password }),
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
     });
-    if (response.ok) {
-      response.json().then((userInfo) => {
-        setUserInfo(userInfo);
-        setRedirect(true);
-      });
+    const { success } = await res.json();
+
+    if (success) {
+      const nextUrl = searchParams.get("next");
+      // @see: https://github.com/vercel/next.js/discussions/44149
+      router.push(nextUrl ?? "/");
+      router.refresh();
     } else {
-      alert("wrong credentials");
+      // Make your shiny error handling with a great user experience
+      alert("Login failed");
     }
   }
 

@@ -1,24 +1,19 @@
 "use client";
 import Link from "next/link";
-import { useContext, useEffect } from "react";
+import { useEffect, useState } from "react";
 import domain from "@/utils/config";
-import { UserContext } from "../hooks/UserContext";
-// import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 export default async function Header() {
-  const { setUserInfo, userInfo } = useContext(UserContext);
-  // const auth = await useAuth.fromServer();
-  useEffect(() => {
-    fetch(`${domain}/profile`, {
+  let { name, setName } = useState("");
+  const auth = await useAuth.fromServer();
+  useEffect(async () => {
+    const response = await fetch(`${domain}/profile`, {
       credentials: "include",
-    })
-      .then((response) => {
-        console.log("#####");
-        console.log(response);
-        console.log("##########");
-        return response;
-      })
-      .then((userInfo) => setUserInfo(userInfo));
+    });
+
+    data = await response.json();
+    setName(data);
   }, []);
 
   function logout() {
@@ -29,21 +24,19 @@ export default async function Header() {
     setUserInfo(null);
   }
 
-  const username = userInfo?.username;
-
   return (
     <header>
       <Link href="/" className="logo">
         MyBlog
       </Link>
       <nav>
-        {username && (
+        {auth && (
           <>
             <Link href="/create">Create new post</Link>
-            <a onClick={logout}>Logout ({username})</a>
+            <a onClick={logout}>Logout {name?.username}</a>
           </>
         )}
-        {!username && (
+        {!auth && (
           <>
             <Link href="/login">Login</Link>
             <Link href="/register">Register</Link>

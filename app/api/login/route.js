@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import connectDB from "@/utils/connectDB";
-import { generateToken } from "@/app/libs/auth";
+import { SignJWT } from "jose";
+import { NextResponse } from "next/server";
+import { getJwtSecretKey } from "@/app/libs/auth";
+
 connectDB();
 export async function POST(req) {
   const { username, password } = await req.json();
@@ -10,17 +13,18 @@ export async function POST(req) {
   const passOk = bcrypt.compareSync(password, userDoc.password);
 
   if (passOk) {
-    const token = generateToken({ username, id: userDoc._id });
+    const token = await new SignJWT({
+      id: userDoc._id,
+      username,
+    })
+      .setProtectedHeader({ alg: "HS256" })
+      .setIssuedAt()
+      .setExpirationTime("30s") // Set your own expiration time
+      .sign(getJwtSecretKey());
 
     const response = NextResponse.json(
       { success: true },
-      {
-        status: 200,
-        headers: {
-          "content-type": "application/json",
-          "Access-Control-Allow-Credentials": "true",
-        },
-      }
+      { status: 200, headers: { "content-type": "application/json" } }
     );
 
     response.cookies.set({

@@ -1,10 +1,12 @@
-import { verifyToken } from "@/app/libs/auth";
+import { verifyJwtToken } from "@/app/libs/auth";
 import connectDB from "@/utils/connectDB";
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+
 connectDB();
 export async function GET(req) {
-  const token = req.cookies.get("token");
-  const { username } = verifyToken(token);
-  return NextResponse.json({ username: username });
+  console.log("#########");
+  const { value: token } = req.cookies.get("token");
+  const r = await verifyJwtToken(token);
+  console.log(r)
+  return NextResponse.json({ re: "re" });
 }

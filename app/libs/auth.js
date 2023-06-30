@@ -1,13 +1,20 @@
-import jwt from "jsonwebtoken";
-const secret = process.env.SECRET;
+import { jwtVerify } from "jose";
 
-export function generateToken(payload) {
-  return jwt.sign(payload, secret, { expiresIn: "1h" });
+export function getJwtSecretKey() {
+  const secret = process.env.SECRET;
+
+  if (!secret) {
+    throw new Error("JWT Secret key is not matched");
+  }
+
+  return new TextEncoder().encode(secret);
 }
 
-export function verifyToken(token) {
+export async function verifyJwtToken(token) {
   try {
-    return jwt.verify(token, secret);
+    const { payload } = await jwtVerify(token, getJwtSecretKey());
+
+    return payload;
   } catch (error) {
     return null;
   }
