@@ -4,10 +4,7 @@ import { NextResponse } from "next/server";
 
 connectDB();
 export async function GET(req) {
-  console.log("#########");
   const { value: token } = req.cookies.get("token");
-  const r = await verifyJwtToken(token);
-  console.log(r)
-  // return NextResponse.json(r);
-  return NextResponse.json({ re: "re" });
+  const username = await verifyJwtToken(token);
+  return NextResponse.json(username);
 }
