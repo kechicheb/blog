@@ -2,7 +2,6 @@ import Post from "@/models/Post";
 import multer from "multer";
 import { NextResponse } from "next/server";
 import fs from "fs";
-import { middleware } from "@/app/middleware";
 import connectDB from "@/utils/connectDB";
 const uploadMiddleware = multer({ dest: "uploads/" });
 connectDB();

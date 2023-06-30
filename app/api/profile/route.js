@@ -8,5 +8,6 @@ export async function GET(req) {
   const { value: token } = req.cookies.get("token");
   const r = await verifyJwtToken(token);
   console.log(r)
+  // return NextResponse.json(r);
   return NextResponse.json({ re: "re" });
 }
