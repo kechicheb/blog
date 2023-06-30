@@ -7,7 +7,6 @@ import connectDB from "@/utils/connectDB";
 const uploadMiddleware = multer({ dest: "uploads/" });
 connectDB();
 export async function GET(req) {
-  req = await req.json();
   middleware(req);
   const { query: id } = req;
   if (id) {
@@ -24,7 +23,7 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-  req = await req.json();
+  // req = await req.json();
   middleware(req);
   uploadMiddleware.single("file");
   const { originalname, path } = req.file;
@@ -45,7 +44,7 @@ export async function POST(req) {
   res.json(postDoc);
 }
 export async function PUT(req) {
-  req = await req.json();
+  // req = await req.json();
   middleware(req);
   uploadMiddleware.single("file");
   let newPath = null;
