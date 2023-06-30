@@ -1,9 +1,7 @@
 "use client";
-
 import { useRouter, useSearchParams } from "next/navigation";
 import domain from "@/utils/config";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -19,18 +17,11 @@ export default function LoginPage() {
 
     if (success) {
       const nextUrl = searchParams.get("next");
-      // @see: https://github.com/vercel/next.js/discussions/44149
       router.push(nextUrl ?? "/");
       router.refresh();
     } else {
-      // Make your shiny error handling with a great user experience
       alert("Login failed");
     }
-  }
-
-  if (redirect) {
-    router.push("/post");
-    return;
   }
   return (
     <form className="login" onSubmit={login}>

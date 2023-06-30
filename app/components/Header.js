@@ -7,14 +7,14 @@ import { useAuth } from "../hooks/useAuth";
 export default async function Header() {
   let { name, setName } = useState("");
   const auth = await useAuth.fromServer();
-  useEffect(async () => {
-    const response = await fetch(`${domain}/profile`, {
-      credentials: "include",
-    });
+  // useEffect(async () => {
+  //   const response = await fetch(`${domain}/profile`, {
+  //     credentials: "include",
+  //   });
 
-    data = await response.json();
-    setName(data);
-  }, []);
+  //   data = await response.json();
+  //   setName(data);
+  // }, []);
 
   function logout() {
     fetch(`${domain}/logout`, {
@@ -33,7 +33,7 @@ export default async function Header() {
         {auth && (
           <>
             <Link href="/create">Create new post</Link>
-            <a onClick={logout}>Logout {name?.username}</a>
+            <a onClick={logout}>Logout </a>
           </>
         )}
         {!auth && (
