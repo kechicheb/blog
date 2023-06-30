@@ -1,7 +1,6 @@
 import "./globals.css";
 import Header from "./components/Header";
 import { Poppins } from "next/font/google";
-import { UserContextProvider } from "./hooks/UserContext";
 const poppins = Poppins({
   weight: ["400", "600"],
   subsets: ["latin"],
@@ -15,10 +14,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <UserContextProvider>
+      
           <Header />
           {children}
-        </UserContextProvider>
+    
       </body>
     </html>
   );
