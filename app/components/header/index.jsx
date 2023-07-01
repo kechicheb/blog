@@ -1,18 +1,15 @@
-
 import Link from "next/link";
 import domain from "@/utils/config";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 
 export default async function Header() {
   const auth = await useAuth.fromServer();
-
-  function logout() {
-    fetch(`${domain}/logout`, {
-      credentials: "include",
-      method: "POST",
-    });
-  }
-
+  // function logout() {
+  //   fetch(`${domain}/logout`, {
+  //     credentials: "include",
+  //     method: "POST",
+  //   });
+  // }
   return (
     <header>
       <Link href="/" className="logo">
@@ -21,8 +18,8 @@ export default async function Header() {
       <nav>
         {auth && (
           <>
-            <Link href="/create">Create new post</Link>
-            <a onClick={logout}>Logout </a>
+            <Link href="/post/create">Create new post</Link>
+            <Link href="/">Logout </Link>
           </>
         )}
         {!auth && (

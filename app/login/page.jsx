@@ -16,10 +16,9 @@ export default function LoginPage() {
     const { success } = await res.json();
 
     if (success) {
-      // const nextUrl = searchParams.get("next");
-      // router.push(nextUrl ?? "/");
-      // router.refresh();
-      router.push("/post" ?? "/");
+      const nextUrl = searchParams.get("next");
+      router.push(nextUrl ?? "/post");
+      router.refresh();
     } else {
       alert("Login failed");
     }

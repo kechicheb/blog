@@ -3,7 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Editor from "../components/Editor";
+import Editor from "../../../components/editor";
 import domain from "@/utils/config";
 
 export default function CreatePost() {

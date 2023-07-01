@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Editor from "../components/Editor";
+import Editor from "../../../components/editor";
 import domain from "@/utils/config";
 export default function EditPost() {
   const [title, setTitle] = useState("");
