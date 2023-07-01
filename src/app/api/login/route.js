@@ -1,9 +1,11 @@
-import User from "@/models/User";
 import bcrypt from "bcryptjs";
-import connectDB from "@/utils/connectDB";
+
 import { SignJWT } from "jose";
 import { NextResponse } from "next/server";
-import { getJwtSecretKey } from "@/app/libs/auth";
+
+import User from "@/src/models/User";
+import connectDB from "@/src/utils/connectDB";
+import { getJwtSecretKey } from "@/src/libs/auth";
 
 connectDB();
 export async function POST(req) {

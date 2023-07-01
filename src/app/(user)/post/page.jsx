@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import Post from "../../components/post";
-import domain from "@/utils/config";
+
+import domain from "@/src/utils/config";
+import Post from "@/src/components/post";
+
 
 export default function IndexPage() {
   // const [posts, setPosts] = useState([]);

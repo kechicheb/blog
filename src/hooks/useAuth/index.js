@@ -1,4 +1,5 @@
-import { verifyJwtToken } from "@/app/libs/auth";
+
+import { verifyJwtToken } from "@/src/libs/auth";
 import React from "react";
 import Cookies from "universal-cookie";
 

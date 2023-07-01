@@ -1,6 +1,7 @@
+import domain from "@/src/utils/config";
 import { formatISO9075 } from "date-fns";
 import Link from "next/link";
-import domain from "@/utils/config";
+
 export default function Post({
   _id,
   title,

@@ -1,6 +1,7 @@
 "use client";
+import domain from "@/src/utils/config";
 import { useRouter, useSearchParams } from "next/navigation";
-import domain from "@/utils/config";
+
 import { useState } from "react";
 export default function LoginPage() {
   const [username, setUsername] = useState("");

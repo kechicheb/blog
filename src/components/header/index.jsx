@@ -1,6 +1,7 @@
 import Link from "next/link";
-import domain from "@/utils/config";
-import { useAuth } from "../../hooks/useAuth";
+
+import { useAuth } from "@/src/hooks/useAuth";
+import domain from "@/src/utils/config";
 
 export default async function Header() {
   const auth = await useAuth.fromServer();
