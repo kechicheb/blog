@@ -1,6 +1,7 @@
-import Post from "@/models/Post";
+import Post from "@/src/components/post";
+import connectDB from "@/src/utils/connectDB";
 import { NextResponse } from "next/server";
-import connectDB from "@/utils/connectDB";
+
 connectDB();
 export async function GET(req, { params }) {
   const id = params.id;

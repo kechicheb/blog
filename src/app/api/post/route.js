@@ -1,8 +1,9 @@
-import Post from "@/models/Post";
 import multer from "multer";
 import { NextResponse } from "next/server";
 import fs from "fs";
-import connectDB from "@/utils/connectDB";
+import connectDB from "@/src/utils/connectDB";
+import Post from "@/src/components/post";
+
 const uploadMiddleware = multer({ dest: "uploads/" });
 connectDB();
 export async function GET() {

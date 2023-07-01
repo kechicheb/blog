@@ -1,7 +1,7 @@
 "use client";
-import domain from "@/utils/config";
-import { useState } from "react";
 
+import domain from "@/src/utils/config";
+import { useState } from "react";
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

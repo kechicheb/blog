@@ -1,4 +1,5 @@
 import Header from "../components/header";
+import { UserContextProvider } from "../hooks/userContext";
 import "./globals.css";
 
 import { Poppins } from "next/font/google";
@@ -15,8 +16,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <Header />
-        {children}
+        <UserContextProvider>
+          <Header />
+          {children}
+        </UserContextProvider>
       </body>
     </html>
   );

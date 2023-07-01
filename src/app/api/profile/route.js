@@ -1,5 +1,6 @@
-import { verifyJwtToken } from "@/app/libs/auth";
-import connectDB from "@/utils/connectDB";
+import { verifyJwtToken } from "@/src/libs/auth";
+import connectDB from "@/src/utils/connectDB";
+
 import { NextResponse } from "next/server";
 
 connectDB();

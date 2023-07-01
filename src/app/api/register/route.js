@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
-import User from "@/models/User";
+
 import bcrypt from "bcryptjs";
-import connectDB from "@/utils/connectDB";
+import connectDB from "@/src/utils/connectDB";
+import User from "@/src/models/User";
+
 connectDB();
 
 const salt = bcrypt.genSaltSync(10);

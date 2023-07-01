@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { useAuth } from "@/src/hooks/useAuth";
 import domain from "@/src/utils/config";
-
 export default async function Header() {
   const auth = await useAuth.fromServer();
   // function logout() {
@@ -20,7 +19,7 @@ export default async function Header() {
         {auth && (
           <>
             <Link href="/post/create">Create new post</Link>
-            <Link href="/">Logout </Link>
+            <Link href="/">Logout  {auth.username}</Link>
           </>
         )}
         {!auth && (
