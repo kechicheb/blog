@@ -21,7 +21,7 @@ export async function POST(req) {
     })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
-      .setExpirationTime("3000s") // Set your own expiration time
+      .setExpirationTime("30s") // Set your own expiration time
       .sign(getJwtSecretKey());
 
     const response = NextResponse.json(

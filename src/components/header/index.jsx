@@ -1,42 +1,33 @@
-"use client";
+// "use client"
 import Link from "next/link";
-import domain from "@/src/utils/config";
-import { useEffect } from "react";
-import { useUserContext } from "@/src/hooks/userContext";
+// import domain from "@/src/utils/config";
+import { useAuth } from "@/src/hooks/useAuth";
 
 export default async function Header() {
-  const { userInfo, setUserInfo } = useUserContext();
-  useEffect(() => {
-    fetch(`${domain}/profile`, {
-      credentials: "include",
-    }).then((response) => {
-      response.json().then((userInfo) => {
-        setUserInfo(userInfo);
-      });
-    });
-  }, []);
-  function logout() {
-    fetch(`${domain}/logout`, {
-      credentials: "include",
-      method: "POST",
-    });
-    setUserInfo(null);
-  }
-  // const username = userInfo.username;
-  const username = null;
+  const auth = await useAuth.fromServer();
+
+  // function logout() {
+  //   fetch(`${domain}/logout`, {
+  //     credentials: "include",
+  //     method: "POST",
+  //   });
+   
+  // }
+
+
   return (
     <header>
       <Link href="/" className="logo">
         MyBlog
       </Link>
       <nav>
-        {username && (
+        {auth && (
           <>
             <Link href="/post/create">Create new post</Link>
-            <Link>Logout {username}</Link>
+            <Link href="/" >Logout {auth.username}</Link>
           </>
         )}
-        {!username && (
+        {!auth && (
           <>
             <Link href="/login">Login</Link>
             <Link href="/register">Register</Link>

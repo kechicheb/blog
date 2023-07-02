@@ -1,13 +1,13 @@
 "use client";
 import { useUserContext } from "@/src/hooks/userContext";
 import domain from "@/src/utils/config";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [redirect, setRedirect] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { userInfo, setUserInfo } = useUserContext();
   async function login(ev) {
     ev.preventDefault();
@@ -17,16 +17,17 @@ export default function LoginPage() {
     });
 
     const user = await res.json();
-    router.push("/post");
-    if (user.success) {
+    const { success } = user;
+
+    if (success) {
       setUserInfo(user);
-      setRedirect(true);
-      // router.push("/post");
+      const nextUrl = searchParams.get("next");
+      router.push(nextUrl ?? "/");
+      router.refresh();
     } else {
       alert("Login failed");
     }
   }
-  // if (redirect) router.push("/post");
 
   return (
     <form className="login" onSubmit={login}>
