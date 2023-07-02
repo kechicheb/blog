@@ -25,7 +25,8 @@ export async function POST(req) {
       .sign(getJwtSecretKey());
 
     const response = NextResponse.json(
-      { success: true },
+      { success: true, username: username },
+
       { status: 200, headers: { "content-type": "application/json" } }
     );
 
