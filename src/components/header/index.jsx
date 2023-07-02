@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
 import domain from "@/src/utils/config";
-import { useContext, useEffect } from "react";
-import { UserContext } from "@/src/hooks/userContext";
+import { useEffect } from "react";
+import { useUserContext } from "@/src/hooks/userContext";
+
 export default async function Header() {
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { userInfo, setUserInfo } = useUserContext();
   useEffect(() => {
     fetch(`${domain}/profile`, {
       credentials: "include",
@@ -14,15 +15,15 @@ export default async function Header() {
       });
     });
   }, []);
-  async function logout() {
-    await fetch(`${domain}/logout`, {
+  function logout() {
+    fetch(`${domain}/logout`, {
       credentials: "include",
       method: "POST",
     });
     setUserInfo(null);
   }
-  const username = userInfo?.username;
-
+  // const username = userInfo.username;
+  const username = null;
   return (
     <header>
       <Link href="/" className="logo">
@@ -32,7 +33,7 @@ export default async function Header() {
         {username && (
           <>
             <Link href="/post/create">Create new post</Link>
-            <Link onClick={logout}>Logout {username}</Link>
+            <Link>Logout {username}</Link>
           </>
         )}
         {!username && (

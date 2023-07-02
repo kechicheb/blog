@@ -1,4 +1,4 @@
-import Post from "@/src/components/post";
+import Post from "@/src/models/Post";
 import connectDB from "@/src/utils/connectDB";
 import { NextResponse } from "next/server";
 

@@ -1,15 +1,14 @@
 "use client";
-
-import { UserContext } from "@/src/hooks/userContext";
+import { useUserContext } from "@/src/hooks/userContext";
 import domain from "@/src/utils/config";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useContext, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [redirect, setRedirect] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { userInfo, setUserInfo } = useUserContext();
   async function login(ev) {
     ev.preventDefault();
     const res = await fetch(`${domain}/login`, {
@@ -17,16 +16,17 @@ export default function LoginPage() {
       body: JSON.stringify({ username, password }),
     });
 
-    if (res.ok) {
-      const user = await res.json();
+    const user = await res.json();
+    router.push("/post");
+    if (user.success) {
       setUserInfo(user);
-      const nextUrl = searchParams.get("next");
-      router.push(nextUrl ?? "/post");
-      router.refresh();
+      setRedirect(true);
+      // router.push("/post");
     } else {
       alert("Login failed");
     }
   }
+  // if (redirect) router.push("/post");
 
   return (
     <form className="login" onSubmit={login}>
