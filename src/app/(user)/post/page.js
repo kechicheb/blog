@@ -6,6 +6,8 @@ import Post from "@/src/components/post";
 
 
 export default function IndexPage() {
+ 
+
   // const [posts, setPosts] = useState([]);
   // useEffect(async () => {
   //   const res = await fetch(`${domain}/post`);

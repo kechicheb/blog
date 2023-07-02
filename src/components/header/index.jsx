@@ -1,19 +1,14 @@
-// "use client"
+"use client";
+import { useAuthContext } from "@/src/hooks/useAuthContext";
+import { useLogout } from "@/src/hooks/useLogout";
 import Link from "next/link";
-// import domain from "@/src/utils/config";
-import { useAuth } from "@/src/hooks/useAuth";
 
 export default async function Header() {
-  const auth = await useAuth.fromServer();
-
-  // function logout() {
-  //   fetch(`${domain}/logout`, {
-  //     credentials: "include",
-  //     method: "POST",
-  //   });
-   
-  // }
-
+  const { user } = useAuthContext();
+  const { logout } = useLogout();
+  const handleClick = () => {
+    logout();
+  };
 
   return (
     <header>
@@ -21,13 +16,13 @@ export default async function Header() {
         MyBlog
       </Link>
       <nav>
-        {auth && (
+        {user && (
           <>
             <Link href="/post/create">Create new post</Link>
-            <Link href="/" >Logout {auth.username}</Link>
+            <button onClick={handleClick}>Logout</button>
           </>
         )}
-        {!auth && (
+        {!user && (
           <>
             <Link href="/login">Login</Link>
             <Link href="/register">Register</Link>
