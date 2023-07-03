@@ -1,14 +1,23 @@
 "use client";
-import { useAuthContext } from "@/src/hooks/useAuthContext";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "@/src/context/AuthContext";
 import { useLogout } from "@/src/hooks/useLogout";
 import Link from "next/link";
 
-export default async function Header() {
-  const { user } = useAuthContext();
+export default function Header() {
+  const { state } = useContext(AuthContext);
+  console.log("Header");
+  console.log(state);
   const { logout } = useLogout();
   const handleClick = () => {
     logout();
   };
+
+  useEffect(() => {
+    console.log("useEffect");
+
+    !state && console.log(state);
+  });
 
   return (
     <header>
@@ -16,13 +25,12 @@ export default async function Header() {
         MyBlog
       </Link>
       <nav>
-        {user && (
+        {state.user ? (
           <>
             <Link href="/post/create">Create new post</Link>
             <button onClick={handleClick}>Logout</button>
           </>
-        )}
-        {!user && (
+        ) : (
           <>
             <Link href="/login">Login</Link>
             <Link href="/register">Register</Link>

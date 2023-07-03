@@ -1,10 +1,14 @@
 "use client";
 
 import domain from "@/src/utils/config";
-import { useAuthContext } from "../useAuthContext";
+import { useContext } from "react";
+
+import { AuthContext } from "@/src/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export const useLogout = () => {
-  const { dispatch } = useAuthContext();
+  const router = useRouter();
+  const { dispatch } = useContext(AuthContext);
 
   const logout = () => {
     fetch(`${domain}/logout`, {
@@ -12,10 +16,11 @@ export const useLogout = () => {
       method: "POST",
     });
     // remove user from storage
-    // localStorage.removeItem("user");
+    localStorage.removeItem("user");
 
     // dispatch logout action
     dispatch({ type: "LOGOUT" });
+    router.push("/");
   };
 
   return { logout };
