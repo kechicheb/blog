@@ -12,7 +12,7 @@ export const useLogout = () => {
       method: "POST",
     });
     // remove user from storage
-    localStorage.removeItem("user");
+    // localStorage.removeItem("user");
 
     // dispatch logout action
     dispatch({ type: "LOGOUT" });
