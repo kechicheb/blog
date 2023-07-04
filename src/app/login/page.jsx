@@ -6,9 +6,9 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
 
   const { login, error, isLoading } = useLogin();
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    await login(username, password);
+    login(username, password);
   };
   return (
     <form className="login" onSubmit={handleSubmit}>
@@ -25,7 +25,7 @@ export default function LoginPage() {
         value={password}
         onChange={(ev) => setPassword(ev.target.value)}
       />
-        <button disabled={isLoading}>Log in</button>
+      <button disabled={isLoading}>Log in</button>
       {error && <div className="error">{error}</div>}
     </form>
   );

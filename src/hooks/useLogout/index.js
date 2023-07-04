@@ -21,6 +21,7 @@ export const useLogout = () => {
     // dispatch logout action
     dispatch({ type: "LOGOUT" });
     router.push("/");
+    router.refresh();
   };
 
   return { logout };

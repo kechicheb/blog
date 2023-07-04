@@ -4,11 +4,12 @@ import { AuthContext } from "@/src/context/AuthContext";
 import { useLogout } from "@/src/hooks/useLogout";
 import Link from "next/link";
 
+import { usePathname } from "next/navigation";
+
 export default function Header() {
   const { state } = useContext(AuthContext);
-  console.log("Header");
-  console.log(state);
   const { logout } = useLogout();
+  const pathname = usePathname();
   const handleClick = () => {
     logout();
   };
@@ -25,10 +26,10 @@ export default function Header() {
         MyBlog
       </Link>
       <nav>
-        {state.user ? (
+        {state.user && pathname.startsWith("/post") ? (
           <>
             <Link href="/post/create">Create new post</Link>
-            <button onClick={handleClick}>Logout</button>
+            <a onClick={handleClick}>Logout</a>
           </>
         ) : (
           <>

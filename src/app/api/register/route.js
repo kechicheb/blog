@@ -41,7 +41,6 @@ export async function POST(req) {
     }
     return NextResponse.json({ success: false });
   } catch (e) {
-    console.log(e);
     return NextResponse.status(400).json(e);
   }
 }
