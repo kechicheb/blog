@@ -22,10 +22,8 @@ export const config = {
 export async function POST(req) {
   const token = req.cookies.get("token") ?? null;
   const { id: userID } = verifyJwtToken(token);
-  const { title, summary, content } = req.body;
-  console.log("#######");
-  console.log(re.body);
-  console.log("#######");
+  // const { title, summary, content } = req.body;
+
   const options = {};
   let filePath;
 
@@ -45,9 +43,9 @@ export async function POST(req) {
   });
 
   const postDoc = await Post.create({
-    title,
-    summary,
-    content,
+    title :"title",
+    summary:"summary",
+    content:"content",
     cover: filePath,
     author: userID,
   });
@@ -65,7 +63,7 @@ export async function PUT(req) {
   }
 
   const { token } = req.cookies;
-  const { id: userID } = verifyToken(token);
+  const { id: userID } = verifyJwtToken(token);
 
   const { id, title, summary, content } = req.body;
   const postDoc = await Post.findById(id);

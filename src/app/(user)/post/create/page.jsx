@@ -31,7 +31,7 @@ export default function CreatePost() {
   }
 
   if (redirect) {
-    router.push("/");
+    router.push("/post");
     return;
   }
   return (
