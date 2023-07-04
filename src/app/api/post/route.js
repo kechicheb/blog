@@ -4,6 +4,7 @@ import Post from "@/src/models/Post";
 import formidable from "formidable";
 import path from "path";
 import fs from "fs/promises";
+import { verifyJwtToken } from "@/src/libs/auth";
 connectDB();
 export async function GET() {
   return NextResponse.json(
@@ -19,6 +20,12 @@ export const config = {
   },
 };
 export async function POST(req) {
+  const token = req.cookies.get("token") ?? null;
+  const { id: userID } = verifyJwtToken(token);
+  const { title, summary, content } = req.body;
+  console.log("#######");
+  console.log(re.body);
+  console.log("#######");
   const options = {};
   let filePath;
 
@@ -36,9 +43,7 @@ export async function POST(req) {
       filePath = Object.values(files)[0].path;
     });
   });
-  const token = cookies.get("token") ?? null;
-  const { id: userID } = verifyToken(token);
-  const { title, summary, content } = req.body;
+
   const postDoc = await Post.create({
     title,
     summary,
