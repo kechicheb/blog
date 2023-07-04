@@ -25,13 +25,13 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
 	  const cookies = new Cookies();
 	  const token = cookies.get("token") ?? null;
-    if (token == null) localStorage.removeItem("user");
+    // if (token == null) localStorage.removeItem("user");
     const user = JSON.parse(localStorage.getItem("user"));
 
-    if (token && user) {
+    if ( user) {
       dispatch({ type: "LOGIN", payload: user });
     }
-    if (!token) router.push("/login");
+    // if (!token) router.push("/login");
   }, []);
 
   return (

@@ -1,10 +1,9 @@
-import multer from "multer";
 import { NextResponse } from "next/server";
-import fs from "fs";
 import connectDB from "@/src/utils/connectDB";
 import Post from "@/src/models/Post";
-
-const uploadMiddleware = multer({ dest: "uploads/" });
+import formidable from "formidable";
+import path from "path";
+import fs from "fs/promises";
 connectDB();
 export async function GET() {
   return NextResponse.json(
@@ -14,22 +13,37 @@ export async function GET() {
       .limit(20)
   );
 }
-
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 export async function POST(req) {
-  uploadMiddleware.single("file");
-  const { originalname, path } = req.file;
-  const parts = originalname.split(".");
-  const ext = parts[parts.length - 1];
-  const newPath = path + "." + ext;
-  fs.renameSync(path, newPath);
-  const { token } = req.cookies;
+  const options = {};
+  let filePath;
+
+  options.uploadDir = path.join(process.cwd(), "/public/uploads");
+  options.filename = (name, ext, path, form) => {
+    return Date.now().toString() + "_" + path.originalFilename;
+  };
+
+  options.maxFileSize = 4000 * 1024 * 1024;
+  const form = formidable(options);
+  new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if (err) reject(err);
+      resolve({ fields, files });
+      filePath = Object.values(files)[0].path;
+    });
+  });
+  const token = cookies.get("token") ?? null;
   const { id: userID } = verifyToken(token);
   const { title, summary, content } = req.body;
   const postDoc = await Post.create({
     title,
     summary,
     content,
-    cover: newPath,
+    cover: filePath,
     author: userID,
   });
   res.json(postDoc);

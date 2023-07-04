@@ -5,23 +5,25 @@ import { useContext } from "react";
 
 import { AuthContext } from "@/src/context/AuthContext";
 import { useRouter } from "next/navigation";
+import Cookies from "universal-cookie";
 
 export const useLogout = () => {
   const router = useRouter();
   const { dispatch } = useContext(AuthContext);
 
   const logout = () => {
-    fetch(`${domain}/logout`, {
-      credentials: "include",
-      method: "POST",
-    });
-    // remove user from storage
+    // // remove user from storage
     localStorage.removeItem("user");
 
     // dispatch logout action
     dispatch({ type: "LOGOUT" });
-    // router.push("/");
-    // router.refresh();
+    const cookies = new Cookies();
+
+    if (cookies.get("token")) {
+      cookies.remove("token");
+    }
+    router.push("/");
+    router.refresh();
   };
 
   return { logout };
