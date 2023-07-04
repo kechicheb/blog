@@ -1,22 +1,14 @@
 "use client";
 
-import domain from "@/src/utils/config";
+import { useSignup } from "@/src/hooks/useSignup";
 import { useState } from "react";
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  async function register(ev) {
+  const { signup, error, isLoading } = useSignup();
+const  register = async (ev) =>{
     ev.preventDefault();
-    const response = await fetch(`${domain}/register`, {
-      method: "POST",
-      body: JSON.stringify({ username, password }),
-      headers: { "Content-Type": "application/json" },
-    });
-    if (response.status === 200) {
-      alert("registration successful");
-    } else {
-      alert("registration failed");
-    }
+    await signup(username, password);
   }
   return (
     <form className="register" onSubmit={register}>
@@ -33,7 +25,8 @@ export default function RegisterPage() {
         value={password}
         onChange={(ev) => setPassword(ev.target.value)}
       />
-      <button>Register</button>
+      <button disabled={isLoading}>Register</button>
+      {error && <div className="error">{error}</div>}
     </form>
   );
 }

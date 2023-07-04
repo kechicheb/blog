@@ -11,18 +11,6 @@ export const useLogin = () => {
 	const { dispatch } = useContext(AuthContext);
 	const router = useRouter();
 	const login =async (username, password) => {
-		// setIsLoading(true);
-		// setError(null);
-
-		// // save the user to local storage
-		// localStorage.setItem('user', JSON.stringify({ username, password }));
-
-		// // update the auth context
-		// dispatch({ type: 'LOGIN', payload: { username, password } });
-
-		// router.push('/post');
-		// // update loading state
-		// setIsLoading(false);
 		setIsLoading(true);
 		setError(null);
 	
@@ -39,7 +27,7 @@ export const useLogin = () => {
 		}
 		if (response.ok) {
 		  // save the user to local storage
-		  // localStorage.setItem("user", JSON.stringify(json));
+		  localStorage.setItem("user", JSON.stringify(json));
 	
 		  // update the auth context
 		  dispatch({type: 'LOGIN', payload: json})
