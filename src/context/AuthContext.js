@@ -1,32 +1,42 @@
-'use client';
-import { createContext, useReducer, useEffect } from 'react';
+"use client";
+import { useRouter } from "next/navigation";
+import { createContext, useReducer, useEffect } from "react";
+import Cookies from "universal-cookie";
 
 export const authReducer = (state, action) => {
-	switch (action.type) {
-		case 'LOGIN':
-			return { ...state, user: action.payload };
-		case 'LOGOUT':
-			return { ...state, user: null };
-		default:
-			return state;
-	}
+  switch (action.type) {
+    case "LOGIN":
+      return { ...state, user: action.payload };
+    case "LOGOUT":
+      return { ...state, user: null };
+    default:
+      return state;
+  }
 };
 
 export const AuthContext = createContext({ state: null, dispatch: () => null });
 
 export const AuthContextProvider = ({ children }) => {
-	const [state, dispatch] = useReducer(authReducer, {
-		user: null,
-	});
+  const [state, dispatch] = useReducer(authReducer, {
+    user: null,
+  });
 
-	useEffect(() => {
-		const user = JSON.parse(localStorage.getItem('user'));
-		console.log('useContext');
-		console.log(user);
-		if (user) {
-			dispatch({ type: 'LOGIN', payload: user });
-		}
-	}, []);
+  const router = useRouter();
+  useEffect(() => {
+	  const cookies = new Cookies();
+	  const token = cookies.get("token") ?? null;
+    if (token == null) localStorage.removeItem("user");
+    const user = JSON.parse(localStorage.getItem("user"));
 
-	return <AuthContext.Provider value={{ state, dispatch }}>{children}</AuthContext.Provider>;
+    if (token && user) {
+      dispatch({ type: "LOGIN", payload: user });
+    }
+    if (!token) router.push("/login");
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ state, dispatch }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
