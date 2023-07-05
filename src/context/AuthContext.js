@@ -32,7 +32,7 @@ export const AuthContextProvider = ({ children }) => {
       dispatch({ type: "LOGIN", payload: user });
     }
     if (!token) router.push("/login");
-    // return console.log("finished")
+    
   }, []);
 
   return (

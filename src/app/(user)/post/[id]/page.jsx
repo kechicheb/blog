@@ -8,10 +8,9 @@ import Image from "next/image";
 
 export default function PostPage({ params }) {
   const [postInfo, setPostInfo] = useState(null);
-  const { userInfo } = useContext(AuthContext);
+  const { state :{user}} = useContext(AuthContext);
 
   const { id } = params;
-
   useEffect(async () => {
     const res = await fetch(`${domain}/post/${id}`);
     const postInfo = await res.json();
@@ -20,13 +19,13 @@ export default function PostPage({ params }) {
   }, []);
 
   if (!postInfo) return "";
-
+console.log(postInfo.author._id === user.id)
   return (
     <div className="post-page">
       <h1>{postInfo.title}</h1>
       <time>{formatISO9075(new Date(postInfo.createdAt))}</time>
       <div className="author">by @{postInfo.author.username}</div>
-      {userInfo.id === postInfo.author._id && (
+      {user.id === postInfo.author._id && (
         <div className="edit-row">
           <Link className="edit-btn" href={`post/edit/${postInfo._id}`}>
             <svg
@@ -55,5 +54,6 @@ export default function PostPage({ params }) {
         dangerouslySetInnerHTML={{ __html: postInfo.content }}
       />
     </div>
+   
   );
 }
