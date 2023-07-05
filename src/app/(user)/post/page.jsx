@@ -10,9 +10,10 @@ export default function IndexPage() {
     const posts = await res.json();
     setPosts(posts);
   }, []);
+  console.log(posts);
   return (
     <>
-      {posts.length !== 0 ? (
+      {posts.length > 0 ? (
         <>
           {posts.map((post) => (
             <Post {...post} />

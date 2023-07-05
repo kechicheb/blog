@@ -38,16 +38,16 @@ export async function POST(req) {
     fs.mkdir(destinationDirPath, { recursive: true });
   }
   const imageFileName = `${Date.now()}-${file.name}`;
-  await fs.writeFile(
-    path.join(destinationDirPath, imageFileName),
-    Buffer.from(fileArrayBuffer)
-  );
   try {
+    await fs.writeFile(
+      path.join(destinationDirPath, imageFileName),
+      Buffer.from(fileArrayBuffer)
+    );
     const post = new Post({
       title,
       content,
       summary,
-      cover: `public/uploads/${imageFileName}`,
+      cover: `/uploads/${imageFileName}`,
       author: userID,
     });
 

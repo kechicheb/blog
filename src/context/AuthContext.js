@@ -22,16 +22,17 @@ export const AuthContextProvider = ({ children }) => {
   });
 
   const router = useRouter();
-  useEffect(() => {
-	  const cookies = new Cookies();
-	  const token = cookies.get("token") ?? null;
-    // if (token == null) localStorage.removeItem("user");
+  useEffect(async () => {
+    const cookies = new Cookies();
+    const token = cookies.get("token") ?? null;
+    if (token == null) localStorage.removeItem("user");
     const user = JSON.parse(localStorage.getItem("user"));
 
-    if ( user) {
+    if (user) {
       dispatch({ type: "LOGIN", payload: user });
     }
-    // if (!token) router.push("/login");
+    if (!token) router.push("/login");
+    // return console.log("finished")
   }, []);
 
   return (

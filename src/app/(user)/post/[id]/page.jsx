@@ -1,24 +1,23 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
 import { formatISO9075 } from "date-fns";
-import { AuthContext } from '@/src/context/AuthContext';
+import { AuthContext } from "@/src/context/AuthContext";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import domain from "@/src/utils/config";
-import { UserContext } from "@/src/hooks/userContext";
+import Image from "next/image";
 
-export default function PostPage() {
+export default function PostPage({ params }) {
   const [postInfo, setPostInfo] = useState(null);
-  const { userInfo } = useContext(UserContext);
-  const router = useRouter();
-  const { id } = router.query;
-  useEffect(
-    () =>
-      fetch(`${domain}/post/${id}`)
-        .then((response) => response.json())
-        .then((postInfo) => setPostInfo(postInfo)),
-    []
-  );
+  const { userInfo } = useContext(AuthContext);
+
+  const { id } = params;
+
+  useEffect(async () => {
+    const res = await fetch(`${domain}/post/${id}`);
+    const postInfo = await res.json();
+
+    setPostInfo(postInfo);
+  }, []);
 
   if (!postInfo) return "";
 
@@ -49,7 +48,7 @@ export default function PostPage() {
         </div>
       )}
       <div className="image">
-        <img src={`${domain}/${postInfo.cover}`} alt="" />
+        <Image src={postInfo.cover} width={500} height={500} />
       </div>
       <div
         className="content"
