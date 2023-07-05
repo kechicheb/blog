@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/src/utils/connectDB";
 import Post from "@/src/models/Post";
-import formidable from "formidable";
+
 import path from "path";
 import fs from "fs/promises";
+import { existsSync } from "fs";
 import { verifyJwtToken } from "@/src/libs/auth";
 connectDB();
 export async function GET() {
@@ -18,52 +19,44 @@ export async function GET() {
 export async function POST(req) {
   const token = req.cookies.get("token") ?? null;
 
+  const formData = await req.formData();
+  const file = formData.get("file");
+  const title = formData.get("title");
+  const content = formData.get("content");
+  const summary = formData.get("summary");
+
   const { id: userID } = await verifyJwtToken(token.value);
+  console.log(`File name: ${file.name}`);
+  console.log(`Content-Length: ${file.size}`);
 
-  const form = formidable({ multiples: true });
+  const destinationDirPath = path.join(process.cwd(), "public/uploads");
+  console.log(destinationDirPath);
 
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      console.error("Error parsing form:", err);
-      return res.status(500).json({ error: "Error parsing form" });
-    }
+  const fileArrayBuffer = await file.arrayBuffer();
 
-    // Access the uploaded image file
-    const imageFile = files.image;
+  if (!existsSync(destinationDirPath)) {
+    fs.mkdir(destinationDirPath, { recursive: true });
+  }
+  const imageFileName = `${Date.now()}-${file.name}`;
+  await fs.writeFile(
+    path.join(destinationDirPath, imageFileName),
+    Buffer.from(fileArrayBuffer)
+  );
+  try {
+    const post = new Post({
+      title,
+      content,
+      summary,
+      cover: `public/uploads/${imageFileName}`,
+      author: userID,
+    });
 
-    // Generate a unique filename for the image
-    const imageFileName = `${Date.now()}-${imageFile.name}`;
-
-    // Set the destination path to save the image in the public folder
-    const destinationPath = path.join(
-      process.cwd(),
-      "public/uploads",
-      imageFileName
-    );
-
-    // Move the image file to the destination path
-    fs.renameSync(imageFile.path, destinationPath);
-
-    // Generate the public URL for the image
-    const imageUrl = `/uploads/${imageFileName}`;
-
-    // Save the post with the user ID and the image link
-    try {
-      const post = new Post({
-        title: fields.title,
-        content: fields.content,
-        summary: fields.summary,
-        cover: imageUrl,
-        author: userID,
-      });
-
-      await post.save();
-      return NextResponse.json({ status: 201, success: true });
-    } catch (saveErr) {
-      console.error("Error saving post:", saveErr);
-      return NextResponse.json({ status: 500, error: "Error saving post" });
-    }
-  });
+    await post.save();
+    return NextResponse.json({ status: 201, success: true });
+  } catch (saveErr) {
+    console.error("Error saving post:", saveErr);
+    return NextResponse.json({ status: 500, error: "Error saving post" });
+  }
 }
 export async function PUT(req) {
   uploadMiddleware.single("file");
@@ -94,3 +87,9 @@ export async function PUT(req) {
 
   res.json(postDoc);
 }
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};

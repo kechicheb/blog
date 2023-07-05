@@ -12,7 +12,6 @@
     "autoprefixer": "10.4.14",
     "bcryptjs": "^2.4.3",
     "date-fns": "^2.30.0",
-    "formidable": "^3.5.0",
     "fs": "^0.0.1-security",
     "jose": "^4.14.4",
     "mongoose": "^7.3.1",
