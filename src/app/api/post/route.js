@@ -14,42 +14,56 @@ export async function GET() {
       .limit(20)
   );
 }
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+
 export async function POST(req) {
   const token = req.cookies.get("token") ?? null;
-  const { id: userID } = verifyJwtToken(token);
-  // const { title, summary, content } = req.body;
 
-  const options = {};
-  let filePath;
+  const { id: userID } = await verifyJwtToken(token.value);
 
-  options.uploadDir = path.join(process.cwd(), "/public/uploads");
-  options.filename = (name, ext, path, form) => {
-    return Date.now().toString() + "_" + path.originalFilename;
-  };
+  const form = formidable({ multiples: true });
 
-  options.maxFileSize = 4000 * 1024 * 1024;
-  const form = formidable(options);
-  new Promise((resolve, reject) => {
-    form.parse(req, (err, fields, files) => {
-      if (err) reject(err);
-      resolve({ fields, files });
-      filePath = Object.values(files)[0].path;
-    });
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      console.error("Error parsing form:", err);
+      return res.status(500).json({ error: "Error parsing form" });
+    }
+
+    // Access the uploaded image file
+    const imageFile = files.image;
+
+    // Generate a unique filename for the image
+    const imageFileName = `${Date.now()}-${imageFile.name}`;
+
+    // Set the destination path to save the image in the public folder
+    const destinationPath = path.join(
+      process.cwd(),
+      "public/uploads",
+      imageFileName
+    );
+
+    // Move the image file to the destination path
+    fs.renameSync(imageFile.path, destinationPath);
+
+    // Generate the public URL for the image
+    const imageUrl = `/uploads/${imageFileName}`;
+
+    // Save the post with the user ID and the image link
+    try {
+      const post = new Post({
+        title: fields.title,
+        content: fields.content,
+        summary: fields.summary,
+        cover: imageUrl,
+        author: userID,
+      });
+
+      await post.save();
+      return NextResponse.json({ status: 201, success: true });
+    } catch (saveErr) {
+      console.error("Error saving post:", saveErr);
+      return NextResponse.json({ status: 500, error: "Error saving post" });
+    }
   });
-
-  const postDoc = await Post.create({
-    title :"title",
-    summary:"summary",
-    content:"content",
-    cover: filePath,
-    author: userID,
-  });
-  res.json(postDoc);
 }
 export async function PUT(req) {
   uploadMiddleware.single("file");
@@ -63,7 +77,7 @@ export async function PUT(req) {
   }
 
   const { token } = req.cookies;
-  const { id: userID } = verifyJwtToken(token);
+  const { id: userID } = await verifyJwtToken(token.value);
 
   const { id, title, summary, content } = req.body;
   const postDoc = await Post.findById(id);

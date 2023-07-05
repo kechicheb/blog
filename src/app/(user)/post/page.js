@@ -13,7 +13,11 @@ export default function IndexPage() {
   return (
     <>
       {posts.length !== 0 ? (
-        <>{posts.length > 0 && posts.map((post) => <Post {...post} />)}</>
+        <>
+          {posts.map((post) => (
+            <Post {...post} />
+          ))}
+        </>
       ) : (
         <>
           <h1>any posts</h1>

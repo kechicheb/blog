@@ -18,7 +18,7 @@ export default function CreatePost() {
     data.set("title", title);
     data.set("summary", summary);
     data.set("content", content);
-    data.set("file", files[0]);
+    data.set("file", files);
     ev.preventDefault();
     const response = await fetch(`${domain}/post`, {
       method: "POST",
@@ -48,7 +48,7 @@ export default function CreatePost() {
         value={summary}
         onChange={(ev) => setSummary(ev.target.value)}
       />
-      <input type="file" onChange={(ev) => setFiles(ev.target.files)} />
+      <input type="file" onChange={(ev) => setFiles(ev.target.files[0])} />
       <Editor value={content} onChange={setContent} />
       <button style={{ marginTop: "5px" }}>Create post</button>
     </form>
