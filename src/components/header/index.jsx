@@ -29,6 +29,7 @@ export default function Header() {
       <nav>
         {state.user && pathname.startsWith("/post") && cookies.get("token")? (
           <>
+            <Link href="/post">Post</Link>
             <Link href="/post/create">Create new post</Link>
             <a onClick={handleClick}>Logout</a>
           </>

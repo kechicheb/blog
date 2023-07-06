@@ -1,5 +1,4 @@
 "use client";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -44,7 +43,7 @@ export default function CreatePost() {
           setFiles={setFiles}
         />
       )}
-      <form onSubmit={createNewPost} name="create">
+      <form onSubmit={createNewPost}>
         <input
           type="title"
           placeholder={"Title"}

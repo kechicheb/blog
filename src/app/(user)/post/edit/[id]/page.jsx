@@ -1,16 +1,17 @@
 "use client";
+import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Editor from "@/src/components/editor";
 import domain from "@/src/utils/config";
-export default function EditPost() {
+export default function EditPost({ params }) {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
   const [redirect, setRedirect] = useState(false);
   const router = useRouter();
-  const { id } = router.query;
+  const { id } = params;
   useEffect(() => {
     fetch(`${domain}/post/${id}`)
       .then((response) => response.json())
