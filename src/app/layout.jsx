@@ -1,4 +1,3 @@
-
 import Header from "../components/header";
 import { AuthContextProvider } from "../context/AuthContext";
 import "./globals.css";

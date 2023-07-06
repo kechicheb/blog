@@ -4,12 +4,7 @@ import domain from "@/src/utils/config";
 import { Suspense, useEffect, useState } from "react";
 
 export default async function IndexPage() {
-  const res = await fetch(`${domain}/post`, {
-    cache: "no-cache",
-    next: {
-      tags: ["posts"],
-    },
-  });
+  const res = await fetch(`${domain}/post`, { next: { revalidate: 60 } });
   const posts = await res.json();
 
   return (

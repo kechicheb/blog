@@ -169,3 +169,31 @@ div.post-page a.edit-btn {
 a svg {
   height: 20px;
 }
+
+.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.success-popup {
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.success-message {
+  margin-bottom: 10px;
+}
+
+.close-button {
+  padding: 5px 10px;
+}

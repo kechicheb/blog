@@ -5,15 +5,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import domain from "@/src/utils/config";
 import Editor from "@/src/components/editor";
-import { revalidateTag } from "next/cache";
-import { createPost } from "@/src/app/actions/serverActions";
+import SuccessPopup from "@/src/components/popup";
 
 export default function CreatePost() {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
-  const [CreateTrue, setCreateTrue] = useState(false);
+  const [Success, setSuccess] = useState(false);
   const router = useRouter();
   async function createNewPost(e) {
     e.preventDefault();
@@ -23,15 +22,28 @@ export default function CreatePost() {
     data.set("content", content);
     data.set("file", files);
 
-    const res = createPost(data);
-    if (res) {
-      setCreateTrue(true);
+    const res = await fetch(`${domain}/post`, {
+      method: "POST",
+      body: data,
+      credentials: "include",
+    });
+    if (res.ok) {
+      setSuccess(true);
     }
   }
-  
+
   return (
     <>
-      {CreateTrue && <p> Success</p>}
+      {Success && (
+        <SuccessPopup
+          message={"Post added successfully"}
+          setSuccess={setSuccess}
+          setTitle={setTitle}
+          setSummary={setSummary}
+          setContent={setContent}
+          setFiles={setFiles}
+        />
+      )}
       <form onSubmit={createNewPost} name="create">
         <input
           type="title"
