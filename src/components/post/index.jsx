@@ -11,16 +11,16 @@ export default function Post({
   createdAt,
   author,
 }) {
+  const imageStyle = {
+    objectFit: "cover",
+    objectPosition: "center center",
+    width: "100%",
+  };
   return (
     <div className="post">
       <div className="image">
         <Link href={`/post/${_id}`}>
-       
-          <Image
-            src={cover}
-            width={500}
-            height={500}
-          />
+          <Image src={cover} width={300} height={300} style={imageStyle} />
         </Link>
       </div>
       <div className="texts">

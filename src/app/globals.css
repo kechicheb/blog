@@ -12,7 +12,7 @@ body {
   color: #222;
 }
 img {
-  max-width: 100%;
+  max-width: 100% !important;
 }
 main {
   padding: 10px;
@@ -123,7 +123,11 @@ div.post-page div.image {
   display: flex;
   overflow: hidden;
 }
-
+div.post-page div.image img{
+  object-fit: cover !important;
+  object-position: center center !important;
+  width: 100% !important;
+}
 div.post-page a {
   color: #333;
   text-decoration: underline;
