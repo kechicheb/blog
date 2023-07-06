@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Editor from "@/src/components/editor";
 import domain from "@/src/utils/config";
+import SuccessPopup from "@/src/components/popup";
 export default function EditPost({ params }) {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
-  const [redirect, setRedirect] = useState(false);
+  const [Success, setSuccess] = useState(false);
   const router = useRouter();
   const { id } = params;
   useEffect(() => {
@@ -38,32 +39,35 @@ export default function EditPost({ params }) {
       credentials: "include",
     });
     if (response.ok) {
-      setRedirect(true);
+      setSuccess(true);
     }
   }
 
-  if (redirect) {
-    router.push(`/post/${id}`);
-    return;
-  }
-
   return (
-    <form onSubmit={updatePost}>
-      <input
-        type="title"
-        placeholder={"Title"}
-        value={title}
-        onChange={(ev) => setTitle(ev.target.value)}
-      />
-      <input
-        type="summary"
-        placeholder={"Summary"}
-        value={summary}
-        onChange={(ev) => setSummary(ev.target.value)}
-      />
-      <input type="file" onChange={(ev) => setFiles(ev.target.files)} />
-      <Editor onChange={setContent} value={content} />
-      <button style={{ marginTop: "5px" }}>Update post</button>
-    </form>
+    <>
+      {Success && (
+        <SuccessPopup
+          message={"Post modified successfully"}
+          setSuccess={setSuccess}
+        />
+      )}
+      <form onSubmit={updatePost}>
+        <input
+          type="title"
+          placeholder={"Title"}
+          value={title}
+          onChange={(ev) => setTitle(ev.target.value)}
+        />
+        <input
+          type="summary"
+          placeholder={"Summary"}
+          value={summary}
+          onChange={(ev) => setSummary(ev.target.value)}
+        />
+        <input type="file" onChange={(ev) => setFiles(ev.target.files)} />
+        <Editor onChange={setContent} value={content} />
+        <button style={{ marginTop: "5px" }}>Update post</button>
+      </form>
+    </>
   );
 }

@@ -15,7 +15,12 @@ export async function middleware(request) {
   if (isAuthPageRequested) {
     if (!hasVerifiedToken) {
       const response = NextResponse.next();
-      response.cookies.delete("token");
+      response.cookies.set({
+        name: "token",
+        value: "",
+        path: "/",
+      });
+      // response.cookies.delete("token");
       return response;
     }
 
@@ -30,7 +35,12 @@ export async function middleware(request) {
     const response = NextResponse.redirect(
       new URL(`/login?${searchParams}`, url)
     );
-    response.cookies.delete("token");
+    response.cookies.set({
+      name: "token",
+      value: "",
+      path: "/",
+    });
+    // response.cookies.delete("token");
 
     return response;
   }
@@ -39,5 +49,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/login", "/post/:path*", "/register"],
+  matcher: ["/login", "/post/:path*", "/signup"],
 };

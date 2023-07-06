@@ -22,9 +22,10 @@ export const AuthContextProvider = ({ children }) => {
   });
 
   const router = useRouter();
+  const cookies = new Cookies();
   useEffect(async () => {
-    const cookies = new Cookies();
     const token = cookies.get("token") ?? null;
+
     if (token == null) localStorage.removeItem("user");
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -32,7 +33,6 @@ export const AuthContextProvider = ({ children }) => {
       dispatch({ type: "LOGIN", payload: user });
     }
     if (!token) router.push("/login");
-    
   }, []);
 
   return (

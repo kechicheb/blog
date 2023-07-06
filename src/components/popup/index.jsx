@@ -13,10 +13,11 @@ const SuccessPopup = ({
   const handleClose = () => {
     setShowPopup(false);
     setSuccess(false);
-    setTitle("");
-    setSummary("");
-    setContent("");
-    setFiles("");
+    if (setTitle) setTitle("");
+    if (setSummary) setSummary("");
+
+    if (setContent) setContent("");
+    if (setFiles) setFiles("");
   };
 
   return (

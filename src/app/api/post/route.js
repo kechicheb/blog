@@ -6,6 +6,7 @@ import path from "path";
 import fs from "fs/promises";
 import { existsSync } from "fs";
 import { verifyJwtToken } from "@/src/libs/auth";
+
 connectDB();
 export async function GET() {
   return NextResponse.json(
@@ -30,8 +31,6 @@ export async function POST(req) {
   console.log(`Content-Length: ${file.size}`);
 
   const destinationDirPath = path.join(process.cwd(), "public/uploads");
-  console.log(destinationDirPath);
-
   const fileArrayBuffer = await file.arrayBuffer();
 
   if (!existsSync(destinationDirPath)) {
@@ -59,33 +58,47 @@ export async function POST(req) {
   }
 }
 export async function PUT(req) {
-  uploadMiddleware.single("file");
-  let newPath = null;
-  if (req.file) {
-    const { originalname, path } = req.file;
-    const parts = originalname.split(".");
-    const ext = parts[parts.length - 1];
-    newPath = path + "." + ext;
-    fs.renameSync(path, newPath);
-  }
+  const token = req.cookies.get("token") ?? null;
 
-  const { token } = req.cookies;
+  const formData = await req.formData();
+  const file = formData.get("file");
+  const id = formData.get("id");
+  const title = formData.get("title");
+  const content = formData.get("content");
+  const summary = formData.get("summary");
+  const postDoc = await Post.findById(id);
+
   const { id: userID } = await verifyJwtToken(token.value);
 
-  const { id, title, summary, content } = req.body;
-  const postDoc = await Post.findById(id);
   const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(userID);
   if (!isAuthor) {
-    return res.status(400).json("you are not the author");
+    return NextResponse.json({ status: 400, error: "you are not the author" });
   }
-  await postDoc.update({
-    title,
-    summary,
-    content,
-    cover: newPath ? newPath : postDoc.cover,
-  });
+  let newPath = null;
 
-  res.json(postDoc);
+  try {
+    if (file) {
+      newPath = `${Date.now()}-${file.name}`;
+      const oldFilePath = path.join(__dirname, `public${postDoc.cover}`);
+      const newFilePath = path.join(__dirname, `public/uploads/${newPath}`);
+      await fs.renameSync(oldFilePath, newFilePath);
+    }
+
+    await Post.updateOne(
+      { _id: id },
+      {
+        title,
+        summary,
+        content,
+        cover: newPath ? `/uploads/${newPath}` : postDoc.cover,
+      }
+    );
+
+    return NextResponse.json({ status: 201, success: true });
+  } catch (saveErr) {
+    console.error("Error saving post:", saveErr);
+    return NextResponse.json({ status: 500, error: "Error saving post" });
+  }
 }
 
 export const config = {
