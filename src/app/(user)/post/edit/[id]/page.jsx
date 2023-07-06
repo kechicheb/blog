@@ -13,14 +13,12 @@ export default function EditPost({ params }) {
   const [Success, setSuccess] = useState(false);
   const router = useRouter();
   const { id } = params;
-  useEffect(() => {
-    fetch(`${domain}/post/${id}`)
-      .then((response) => response.json())
-      .then((postInfo) => {
-        setTitle(postInfo.title);
-        setContent(postInfo.content);
-        setSummary(postInfo.summary);
-      });
+  useEffect(async () => {
+    const res = await fetch(`${domain}/post/${id}`);
+    const postInfo =await res.json();
+    setTitle(postInfo.title);
+    setContent(postInfo.content);
+    setSummary(postInfo.summary);
   }, []);
 
   async function updatePost(ev) {

@@ -1,14 +1,14 @@
 "use client";
 import Post from "@/src/components/post";
 import domain from "@/src/utils/config";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default async function IndexPage() {
   const res = await fetch(`${domain}/post`, { next: { revalidate: 60 } });
   const posts = await res.json();
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <>
       {posts.length > 0 ? (
         <>
           {posts.map((post) => (
@@ -20,6 +20,6 @@ export default async function IndexPage() {
           <h1>any posts</h1>
         </>
       )}
-    </Suspense>
+    </>
   );
 }

@@ -78,10 +78,14 @@ export async function PUT(req) {
 
   try {
     if (file) {
+      await fs.unlink(`public${postDoc.cover}`);
+      const destinationDirPath = path.join(process.cwd(), "public/uploads");
+      const fileArrayBuffer = await file.arrayBuffer();
       newPath = `${Date.now()}-${file.name}`;
-      const oldFilePath = path.join(__dirname, `public${postDoc.cover}`);
-      const newFilePath = path.join(__dirname, `public/uploads/${newPath}`);
-      await fs.renameSync(oldFilePath, newFilePath);
+      await fs.writeFile(
+        path.join(destinationDirPath, newPath),
+        Buffer.from(fileArrayBuffer)
+      );
     }
 
     await Post.updateOne(
