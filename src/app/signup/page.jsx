@@ -2,17 +2,18 @@
 
 import { useSignup } from "@/src/hooks/useSignup";
 import { useState } from "react";
-export default function RegisterPage() {
+export default function SignupPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { signup, error, isLoading } = useSignup();
-const  register = async (ev) =>{
+
+  const Signup = async (ev) => {
     ev.preventDefault();
     await signup(username, password);
-  }
+  };
   return (
-    <form className="register" onSubmit={register}>
-      <h1>Register</h1>
+    <form className="signup" onSubmit={ Signup}>
+      <h1>Signup</h1>
       <input
         type="text"
         placeholder="username"
@@ -25,7 +26,7 @@ const  register = async (ev) =>{
         value={password}
         onChange={(ev) => setPassword(ev.target.value)}
       />
-      <button disabled={isLoading}>Register</button>
+      <button disabled={isLoading}>Signup</button>
       {error && <div className="error">{error}</div>}
     </form>
   );

@@ -76,9 +76,12 @@ div.post p.summary {
 }
 
 form.login,
-form.register {
+form.signup {
   max-width: 400px;
   margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
 }
 input {
   display: block;
@@ -88,6 +91,17 @@ input {
   border: 2px solid #ddd;
   border-radius: 5px;
   background-color: #fff;
+}
+div.error {
+  padding: 10px;
+  background: #ffefef;
+  border: 1px solid #e7195a;
+  color: #e7195a;
+  border-radius: 4px;
+  margin: 20px 0;
+}
+input.error {
+  border: 1px solid #e7195a;
 }
 button {
   cursor: pointer;
@@ -100,7 +114,7 @@ button {
   padding: 7px 0;
 }
 form.login h1,
-form.register h1 {
+form.signup h1 {
   text-align: center;
 }
 
@@ -109,11 +123,7 @@ div.post-page div.image {
   display: flex;
   overflow: hidden;
 }
-/* div.post-page div.image img {
-  object-fit: cover;
-  object-position: center center;
-  width: 100%;
-} */
+
 div.post-page a {
   color: #333;
   text-decoration: underline;

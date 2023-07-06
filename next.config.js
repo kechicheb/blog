@@ -2,9 +2,10 @@
 const nextConfig = {
   experimental: {
     appDir: true,
+    serverActions: true,
   },
   images: {
-    domains: ['localhost'],
+    domains: ["localhost"],
   },
   // async headers() {
   //   return [

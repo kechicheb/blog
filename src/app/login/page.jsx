@@ -1,4 +1,5 @@
 "use client";
+
 import { useLogin } from "@/src/hooks/useLogin";
 import { useState } from "react";
 export default function LoginPage() {
@@ -6,9 +7,9 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
 
   const { login, error, isLoading } = useLogin();
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login(username, password);
+    await login(username, password);
   };
   return (
     <form className="login" onSubmit={handleSubmit}>
@@ -25,7 +26,7 @@ export default function LoginPage() {
         value={password}
         onChange={(ev) => setPassword(ev.target.value)}
       />
-      <button disabled={isLoading}>Log in</button>
+      <button disabled={isLoading}>Login</button>
       {error && <div className="error">{error}</div>}
     </form>
   );

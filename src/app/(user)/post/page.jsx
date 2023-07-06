@@ -1,18 +1,19 @@
 "use client";
 import Post from "@/src/components/post";
 import domain from "@/src/utils/config";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-export default function IndexPage() {
-  const [posts, setPosts] = useState([]);
-  useEffect(async () => {
-    const res = await fetch(`${domain}/post`);
-    const posts = await res.json();
-    setPosts(posts);
-  }, []);
-  console.log(posts);
+export default async function IndexPage() {
+  const res = await fetch(`${domain}/post`, {
+    cache: "no-cache",
+    next: {
+      tags: ["posts"],
+    },
+  });
+  const posts = await res.json();
+
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       {posts.length > 0 ? (
         <>
           {posts.map((post) => (
@@ -24,6 +25,6 @@ export default function IndexPage() {
           <h1>any posts</h1>
         </>
       )}
-    </>
+    </Suspense>
   );
 }
