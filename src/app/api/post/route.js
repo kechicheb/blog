@@ -104,9 +104,3 @@ export async function PUT(req) {
     return NextResponse.json({ status: 500, error: "Error saving post" });
   }
 }
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};

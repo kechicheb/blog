@@ -50,4 +50,7 @@ export async function middleware(request) {
 
 export const config = {
   matcher: ["/login", "/post/:path*", "/signup"],
+  api: {
+    bodyParser: false,
+  },
 };
